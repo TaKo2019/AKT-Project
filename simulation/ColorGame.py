@@ -39,7 +39,7 @@ rw.newDisplay(width, height, name)
 ################################################################
 
 # Display the state by drawing a cat at that x coordinate
-bgrnd = dw.loadImage("ColorGrid.bmp")
+#bgrnd = dw.loadImage("ColorGrid.bmp")
 myimage = dw.loadImage("ColorBlock.bmp")
 
 # state -> image (IO)
@@ -47,8 +47,8 @@ myimage = dw.loadImage("ColorBlock.bmp")
 # coordinate given by the first component of the state tuple
 #
 def updateDisplay(state):
-    dw.fill(dw.black)
-    dw.draw(bgrnd, (0,0))
+    dw.fill((state[4],state[5],state[6]))
+    #dw.draw(bgrnd, (0,0))
     dw.draw(myimage, (state[0], state[2]))
 
 
@@ -61,7 +61,7 @@ def updateDisplay(state):
 #
 # state -> state
 def updateState(state):
-    return((state[0]+state[1],state[1],state[2]+state[3],state[3]))
+    return((state[0]+state[1],state[1],state[2]+state[3],state[3],state[4],state[5],state[6]))
 
 ################################################################
 
@@ -150,9 +150,15 @@ def handleEvent(state, event):
             print("Box 27")
         if mouseX > 1080 and mouseX < 1260 and mouseY > 540 and mouseY < 720:
             print("Box 28")
-        NewX = randint(0,6) * 180
-        NewY = randint(0,3) * 180
-        return((NewX,0,NewY,0))
+        if mouseX > state[0] and mouseX < state[0]+180 and mouseY > state[2] and mouseY < state[2] + 180:
+            NewX = randint(0,6) * 180
+            NewY = randint(0,3) * 180
+            r = randint(0,255)
+            g = randint(0,255)
+            b = randint(0,255)
+            return((NewX,0,NewY,0,r,g,b))
+        else:
+            return(state)
     else:
         return(state)
     print(event)
@@ -162,7 +168,7 @@ def handleEvent(state, event):
 # World state will be single x coordinate at left edge of world
 
 # The cat starts at the left, moving right 
-initState = (0,0,0,0)
+initState = (0,0,0,0,255,255,0)
 
 # Run the simulation no faster than 60 frames per second
 frameRate = 60
