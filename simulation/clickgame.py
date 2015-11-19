@@ -32,14 +32,14 @@ from random import randint
 
 # Initialize world
 name = "Cat Fun. Press the mouse (but not too fast)!"
-width = 500
-height = 500
+width = 1280
+height = 720
 rw.newDisplay(width, height, name)
 
 ################################################################
 
 # Display the state by drawing a cat at that x coordinate
-myimage = dw.loadImage("10426306_10203780151533733_2057102321053958166_n.bmp")
+myimage = dw.loadImage("target.bmp")
 
 # state -> image (IO)
 # draw the cat halfway up the screen (height/2) and at the x
@@ -89,12 +89,15 @@ def endState(state):
 def handleEvent(state, event):  
 #    print("Handling event: " + str(event))
     if (event.type == pg.MOUSEBUTTONDOWN):
-        newStateX = randint(-2,2)
-        newStateY = randint(-2,2)
-        return((state[0],newStateX,state[2],newStateY))
-    else:
-        return(state)
-    print(event)
+        mousepos = pg.mouse.get_pos()
+        mouseX = mousepos[0]
+        mouseY = mousepos[1]
+        if int(mouseX)> int(state[0])
+            newStateX = state[1]+1
+            newStateY = state[3]+1
+            return((state[0],newStateX,state[2],newStateY))
+        else return(state)
+    else return(state)
 
 ################################################################
 
@@ -110,3 +113,6 @@ frameRate = 60
 rw.runWorld(initState, updateDisplay, updateState, handleEvent,
             endState, frameRate)
 
+#State of hitbox corners
+UpperLeftX = state[0]+15
+UpperLeftY = state[2]+15
