@@ -39,7 +39,8 @@ rw.newDisplay(width, height, name)
 ################################################################
 
 # Display the state by drawing a cat at that x coordinate
-myimage = dw.loadImage("ColorGrid.bmp")
+bgrnd = dw.loadImage("ColorGrid.bmp")
+myimage = dw.loadImage("ColorBlock.bmp")
 
 # state -> image (IO)
 # draw the cat halfway up the screen (height/2) and at the x
@@ -47,6 +48,7 @@ myimage = dw.loadImage("ColorGrid.bmp")
 #
 def updateDisplay(state):
     dw.fill(dw.black)
+    dw.draw(bgrnd, (0,0))
     dw.draw(myimage, (state[0], state[2]))
 
 
@@ -148,7 +150,9 @@ def handleEvent(state, event):
             print("Box 27")
         if mouseX > 1080 and mouseX < 1260 and mouseY > 540 and mouseY < 720:
             print("Box 28")
-        return((state[0],0,state[2],0))
+        NewX = randint(0,6) * 180
+        NewY = randint(0,3) * 180
+        return((NewX,0,NewY,0))
     else:
         return(state)
     print(event)
