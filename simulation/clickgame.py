@@ -92,19 +92,22 @@ def handleEvent(state, event):
         mousepos = pg.mouse.get_pos()
         mouseX = mousepos[0]
         mouseY = mousepos[1]
-        if int(mouseX)> int(state[0])
+        if mouseX > state[0]+15 and mouseX < state[0]+45 and mouseY > state[2]+15 and mouseY < state[2] +45:
             newStateX = state[1]+1
             newStateY = state[3]+1
+            print("yay")
             return((state[0],newStateX,state[2],newStateY))
-        else return(state)
-    else return(state)
+        else:
+            return(state)
+    else:
+        return(state)
 
 ################################################################
 
 # World state will be single x coordinate at left edge of world
 
 # The cat starts at the left, moving right 
-initState = (randint(0,500),1,randint(0,500),1)
+initState = (0,1,0,1)
 
 # Run the simulation no faster than 60 frames per second
 frameRate = 60
@@ -112,7 +115,3 @@ frameRate = 60
 # Run the simulation!
 rw.runWorld(initState, updateDisplay, updateState, handleEvent,
             endState, frameRate)
-
-#State of hitbox corners
-UpperLeftX = state[0]+15
-UpperLeftY = state[2]+15
