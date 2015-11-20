@@ -55,6 +55,8 @@ def updateDisplay(state):
     pg.draw.rect(squareSurf,(abs(state[4]-state[7]),abs(state[5]-state[7]),abs(state[6]-state[7])),square)
     dw.draw(squareSurf,(state[0],state[2]))
     scorestring = str(state[8])
+    if state[8] == 31:
+        scorestring = "Win"
     label2 = myfont.render(scorestring,1,(0,0,0))
     dw.draw(label2, (0,0))
 
