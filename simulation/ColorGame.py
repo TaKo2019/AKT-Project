@@ -35,12 +35,14 @@ name = "Cat Fun. Press the mouse (but not too fast)!"
 width = 1260
 height = 720
 rw.newDisplay(width, height, name)
-
+square = pg.Rect(0,0,180,180)
+squareSurf = pg.Surface((180,180))
+myfont = pg.font.SysFont("monospace",70)
 ################################################################
 
 # Display the state by drawing a cat at that x coordinate
 #bgrnd = dw.loadImage("ColorGrid.bmp")
-myimage = dw.loadImage("ColorBlock.bmp")
+#myimage = dw.loadImage("ColorBlock.bmp")
 
 # state -> image (IO)
 # draw the cat halfway up the screen (height/2) and at the x
@@ -49,7 +51,12 @@ myimage = dw.loadImage("ColorBlock.bmp")
 def updateDisplay(state):
     dw.fill((state[4],state[5],state[6]))
     #dw.draw(bgrnd, (0,0))
-    dw.draw(myimage, (state[0], state[2]))
+    #dw.draw(myimage, (state[0], state[2]))
+    pg.draw.rect(squareSurf,(abs(state[4]-state[7]),abs(state[5]-state[7]),abs(state[6]-state[7])),square)
+    dw.draw(squareSurf,(state[0],state[2]))
+    scorestring = str(state[8])
+    label2 = myfont.render(scorestring,1,(0,0,0))
+    dw.draw(label2, (0,0))
 
 
 ################################################################
@@ -61,7 +68,7 @@ def updateDisplay(state):
 #
 # state -> state
 def updateState(state):
-    return((state[0]+state[1],state[1],state[2]+state[3],state[3],state[4],state[5],state[6]))
+    return((state[0]+state[1],state[1],state[2]+state[3],state[3],state[4],state[5],state[6],state[7],state[8]))
 
 ################################################################
 
@@ -156,7 +163,10 @@ def handleEvent(state, event):
             r = randint(0,255)
             g = randint(0,255)
             b = randint(0,255)
-            return((NewX,0,NewY,0,r,g,b))
+            change = state[7]-1
+            score = state[8] + 1
+            label = myfont.render(str(score),1,(0,0,0))
+            return((NewX,0,NewY,0,r,g,b,change,score))
         else:
             return(state)
     else:
@@ -168,7 +178,7 @@ def handleEvent(state, event):
 # World state will be single x coordinate at left edge of world
 
 # The cat starts at the left, moving right 
-initState = (0,0,0,0,255,255,0)
+initState = (0,0,0,0,255,255,0,30,1)
 
 # Run the simulation no faster than 60 frames per second
 frameRate = 60
