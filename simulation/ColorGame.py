@@ -40,6 +40,17 @@ squareSurf = pg.Surface((180,180))
 myfont = pg.font.SysFont("monospace",70)
 ################################################################
 
+class State:
+    Xpos = 0
+    Xvel = 0
+    Ypos = 0
+    Yvel = 0
+    BG_r = 255
+    BG_g = 255
+    BG_b = 0
+    ColorDiff = 0
+    Score = 1
+
 # Display the state by drawing a cat at that x coordinate
 #bgrnd = dw.loadImage("ColorGrid.bmp")
 #myimage = dw.loadImage("ColorBlock.bmp")

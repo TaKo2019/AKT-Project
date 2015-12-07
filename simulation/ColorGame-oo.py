@@ -51,6 +51,49 @@ class State:
     ColorDiff = 30
     Score = 1
 
+    '''
+    def updateDisplay(self):
+        dw.fill((self.BG_r,self.BG_g,self.BG_b))
+        pg.draw.rect(squareSurf,(abs(self.BG_r-self.ColorDiff),abs(self.BG_g-self.ColorDiff),abs(BG_b-self.ColorDiff)),square)
+        dw.draw(squareSurf,(self.Xpos,self.Ypos))
+        scorestring = str(self.Score)
+        if self.Score == 31:
+            scorestring = "Win"
+        label2 = myfont.render(scorestring,1,(0,0,0))
+        dw.draw(label2,(0,0))
+
+    def updateState(self):
+        return((self.Xpos+self.Xvel,self.Xvel,self.Ypos+self.Yvel,self.Yvel,self.BG_r,self.BG_g,self.BG_b,self.ColorDiff,self.Score))
+
+    def endState(self):
+        if (self.Xpos > width or self.Xpos < 0 or self.Ypos < 0 or self.Ypos > height):
+            return True
+        else:
+            return False
+
+    def handleEvent(self, event):  
+        #print("Handling event: " + str(event))
+        if (event.type == pg.MOUSEBUTTONDOWN):
+            mousepos = pg.mouse.get_pos()
+            mouseX = mousepos[0]
+            mouseY = mousepos[1]
+            if mouseX > self.Xpos and mouseX < self.Xpos+180 and mouseY > self.Ypos and mouseY < self.Ypos + 180:
+                NewX = randint(0,6) * 180
+                NewY = randint(0,3) * 180
+                r = randint(0,255)
+                g = randint(0,255)
+                b = randint(0,255)
+                change = self.ColorDiff-1
+                score = self.Score + 1
+                label = myfont.render(str(score),1,(0,0,0))
+                return((NewX,0,NewY,0,r,g,b,change,score))
+            else:
+                return(self)
+        else:
+            return(self)
+        print(event)
+    '''
+
 # Display the state by drawing a cat at that x coordinate
 #bgrnd = dw.loadImage("ColorGrid.bmp")
 #myimage = dw.loadImage("ColorBlock.bmp")
@@ -59,17 +102,19 @@ class State:
 # draw the cat halfway up the screen (height/2) and at the x
 # coordinate given by the first component of the state tuple
 #
+
 def updateDisplay(state):
     dw.fill((State.BG_r,State.BG_g,State.BG_b))
     #dw.draw(bgrnd, (0,0))
     #dw.draw(myimage, (State.Xpos, State.Ypos))
-    pg.draw.rect(squareSurf,(abs(State.BG_r-State.ColorDiff),abs(State.BG_b-State.Colordiff),abs(state[6]-State.ColorDiff)),square)
+    pg.draw.rect(squareSurf,(abs(State.BG_r-State.ColorDiff),abs(State.BG_g-State.ColorDiff),abs(State.BG_b-State.ColorDiff)),square)
     dw.draw(squareSurf,(State.Xpos,State.Ypos))
-    scorestring = str(state[8])
-    if state[8] == 31:
+    scorestring = str(State.Score)
+    if State.Score == 31:
         scorestring = "Win"
     label2 = myfont.render(scorestring,1,(0,0,0))
     dw.draw(label2, (0,0))
+
 
 
 ################################################################
@@ -80,6 +125,7 @@ def updateDisplay(state):
 # components by name (as we saw with records in Idris).
 #
 # state -> state
+
 def updateState(state):
     return((State.Xpos+State.Xvel,State.Xvel,State.Ypos+State.Yvel,State.Yvel,State.BG_r,State.BG_g,State.BG_b,State.ColorDiff,State.Score))
 
@@ -88,6 +134,7 @@ def updateState(state):
 # Terminate the simulation when the x coord reaches the screen edge,
 # that is, when pos is less then zero or greater than the screen width
 # state -> bool
+
 def endState(state):
     if (State.Xpos > width or State.Xpos < 0 or State.Ypos < 0 or State.Ypos > height):
         return True
@@ -108,6 +155,7 @@ def endState(state):
 #
 # state -> event -> state
 #
+
 def handleEvent(state, event):  
 #    print("Handling event: " + str(event))
     if (event.type == pg.MOUSEBUTTONDOWN):
@@ -171,15 +219,14 @@ def handleEvent(state, event):
         if mouseX > 1080 and mouseX < 1260 and mouseY > 540 and mouseY < 720:
             print("Box 28")
         if mouseX > State.Xpos and mouseX < State.Xpos+180 and mouseY > State.Ypos and mouseY < State.Ypos + 180:
-            NewX = randint(0,6) * 180
-            NewY = randint(0,3) * 180
-            r = randint(0,255)
-            g = randint(0,255)
-            b = randint(0,255)
-            change = State.ColorDiff-1
-            score = State.Score + 1
-            label = myfont.render(str(score),1,(0,0,0))
-            return((NewX,0,NewY,0,r,g,b,change,score))
+            State.Xpos= randint(0,6) * 180
+            State.Ypos = randint(0,3) * 180
+            State.BG_r = randint(0,255)
+            State.BG_g = randint(0,255)
+            State.BG_b = randint(0,255)
+            State.ColorDiff = State.ColorDiff-1
+            State.Score = State.Score + 1
+            label = myfont.render(str(State.Score),1,(0,0,0))
         else:
             return(state)
     else:
@@ -197,6 +244,5 @@ initState = (0,0,0,0,255,255,0,30,1)
 frameRate = 60
 
 # Run the simulation!
-rw.runWorld(initState, updateDisplay, updateState, handleEvent,
-            endState, frameRate)
+rw.runWorld(initState, updateDisplay, updateState, handleEvent, endState, frameRate)
 
